@@ -1,0 +1,16 @@
+//каждая строка во время прочтения интерпритируется в байткод и методы компилируются во время выполнения
+public class JvmComprehension {// ClassLoader подгружает класс JvmComprehension в Metaspace
+
+    public static void main(String[] args) { //пополняется куча и стэк(смотри картинку)
+        int i = 1;                      // 1  пополняется куча и стэк(смотри картинку)
+        Object o = new Object();        // 2  ClassLoader подгружает класс Object в Metaspace и добавляется в кучу и стэк(смотри на картинке)
+        Integer ii = 2;                 // 3  ClassLoader подгружает класс Integer в Metaspace  и добавляется в кучу и стэк(смотри на картинке)
+        printAll(o, i, ii);             // 4  как я понимаю, после выхода из метода printAll() все потоки останавливаются и сборщик мусора ищет пустые обьекты(которые ни на что не ссылаются) и подчищает их
+        System.out.println("finished"); // 7  ClassLoader подгружает класс System классы в Metaspace 
+    } // после выхода из метода main() сборщик подчищает все обьекты и чистит память
+
+    private static void printAll(Object o, int i, Integer ii) { //пополняется куча и стэк(смотри картинку)
+        Integer uselessVar = 700;                   // 5  пополняется куча и стэк(смотри картинку)
+        System.out.println(o.toString() + i + ii);  // 6  пополняется куча и стэк(смотри картинку)
+    }
+}
